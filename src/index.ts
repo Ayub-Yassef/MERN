@@ -1,39 +1,27 @@
 import express from 'express';
 import './db';
-import Note from './models/note'
+
+import noteRouter from "./routers/note";
 
 //creating server
 const app = express();
 
+//parsing post request coming from the fetch.post() method
 app.use(express.json());
+
+//parsing post request from HTML form
 app.use(express.urlencoded({ extended: false }));
 
-app.post('/', (req, res) => {
-    console.log(req.body)
-    res.json({ message: "I am listening." });
-});
+/**
+ * 
+ * "localhost:8000/note/create"
+"localhost:8000/note"
+"localhost:8000/note/noteId"
+"localhost:8000/note/noteId"
+*/
+app.use("/note", noteRouter);
 
-app.post('/create', async (req, res) => {
-    const newNote = new Note({title: req.body.title, description: req.body.description});
-    await newNote.save();
-    res.json({ message: "I am listening to create." });
-});
-
-//listen to port
+//listening instruction set to port 8000
 app.listen(8000, () => {
-    console.log("listening");
-});
-
-app.patch("/:noteId", async (req, res) => {
-    const { noteId } = req.params;
-    const note = await Note.findById(noteId);
-    if (!note) return res.json({ error: "Note not found!" });
-
-    const { title, description } = req.body as IncomingBody;
-    if (title) note.title = title;
-    if (description) note.description = description;
-
-    await note.save();
-
-    res.json ({ note });
+    console.log("listening alright hen! xx");
 });
