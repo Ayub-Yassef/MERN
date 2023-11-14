@@ -14,7 +14,7 @@ const noteSchema = new Schema({
     description: {
         type: String,
         trim: true
-    }
-})
+    },
+});
 
 export default model("Note", noteSchema);
